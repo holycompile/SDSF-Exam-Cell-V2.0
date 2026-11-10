@@ -4,6 +4,11 @@ This repository manages the automated examination workflows for the **School of 
 
 This document details the database architecture designed for generating, storing, and printing the **Panel of Examiners (Confidential - SDSF/Exam/09)** form.
 
+> [!IMPORTANT]
+> **Developer Notice & Intellectual Property Rights**  
+> This project serves strictly as an informational and architectural reference for authorized developers. This project, its source code, and its underlying database designs shall **not** be copied, replicated, redistributed, or reciprocated in any manner without prior authorization.  
+> **All Rights Reserved © SDSF - School of Data Science and Forecasting, Devi Ahilya Vishwavidyalaya (DAVV), Indore.**
+
 ---
 
 ## 1. Entity Relationship (ER) Overview
@@ -159,4 +164,13 @@ Captures the exam committee members and administrative signatories at the bottom
    python databases/init_db.py
    ```
 4. All 6 tables will be created and verified inside your TiDB Cloud cluster.
+
+---
+
+## 5. Proprietary Notice & Legal Disclaimer
+
+This repository is maintained for internal examination and academic management purposes. Unauthorized reproduction, dissemination, or commercial exploitation of this software or its schemas is strictly prohibited.
+
+**All Rights Reserved © SDSF - School of Data Science and Forecasting, Devi Ahilya Vishwavidyalaya (DAVV), Indore.**
+
 
