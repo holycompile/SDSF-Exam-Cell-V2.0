@@ -11,6 +11,12 @@ This document details the database architecture designed for generating, storing
 
 ---
 
+**Lead Developer & Architect:** Joyobrata Das ([@holycompile](https://github.com/holycompile))  
+**Organization:** School of Data Science and Forecasting, Devi Ahilya Vishwavidyalaya, Indore  
+**Project:** SDSF Exam Cell Automation System V2.0  
+
+---
+
 ## 1. Entity Relationship (ER) Overview
 
 ```mermaid
@@ -171,6 +177,8 @@ Captures the exam committee members and administrative signatories at the bottom
 
 This repository is maintained for internal examination and academic management purposes. Unauthorized reproduction, dissemination, or commercial exploitation of this software or its schemas is strictly prohibited.
 
-**All Rights Reserved © SDSF - School of Data Science and Forecasting, Devi Ahilya Vishwavidyalaya (DAVV), Indore.**
+* **Lead Developer:** Joyobrata Das ([@holycompile](https://github.com/holycompile))
+* **Affiliation:** School of Data Science and Forecasting, Devi Ahilya Vishwavidyalaya (DAVV), Indore  
+* **Copyright:** All Rights Reserved © SDSF - School of Data Science and Forecasting, DAVV Indore.
 
 
