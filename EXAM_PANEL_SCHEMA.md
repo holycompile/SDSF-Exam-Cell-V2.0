@@ -1,13 +1,46 @@
 # SDSF Exam Cell - Panel of Examiners Database Schema & Architecture
 
-This document outlines the database tables, schema design, field descriptions, and data flow required to generate and manage the **Panel of Examiners (SDSF/Exam/09)** form.
+This document outlines the database tables, schema design, field descriptions, parent-child relationships, and data flow required to generate and manage the **Panel of Examiners (SDSF/Exam/09)** form.
+
+---
+
+## Table Hierarchy: Parent vs. Child Classification
+
+In relational database design, **Parent Tables** store independent entities that can exist on their own, while **Child Tables** depend on one or more parent tables through Foreign Keys.
+
+```text
+[ ROOT PARENT TABLES ]
+├── programs (Independent Master Table)
+└── teachers (Independent Master Table)
+         │
+         ▼
+[ INTERMEDIATE / CURRICULUM LEVEL ]
+└── subjects (Child of `programs`, Parent to `exam_panel_subjects`)
+         │
+         ▼
+[ TRANSACTION LEVEL ]
+└── exam_panels (Child of `programs`, MAIN PARENT of the Exam Sheet)
+         ├── exam_panel_subjects  (Child of `exam_panels`, `subjects`, and `teachers`)
+         └── exam_panel_committee (Child of `exam_panels` and `teachers`)
+```
+
+### Summary Matrix
+
+| Table Name | Classification | Parent Table(s) It Depends On | Child Table(s) That Depend On It | Cascade Delete Behavior |
+| :--- | :--- | :--- | :--- | :--- |
+| **`programs`** | **Root Parent** | *None* | `subjects`, `exam_panels` | Deleting a program deletes its subjects (`CASCADE`) |
+| **`teachers`** | **Root Parent** | *None* | `exam_panel_subjects`, `exam_panel_committee` | Deleting a teacher sets references to `NULL` (`SET NULL`) |
+| **`subjects`** | **Child & Parent** | Parent: `programs` | Child: `exam_panel_subjects` | Deleting a subject sets panel row reference to `NULL` |
+| **`exam_panels`** | **Transaction Parent** | Parent: `programs` | Children: `exam_panel_subjects`, `exam_panel_committee` | **Main Parent**: Deleting a panel removes all its subjects and committee rows (`CASCADE`) |
+| **`exam_panel_subjects`** | **Child Table** | Parents: `exam_panels`, `subjects`, `teachers` | *None (Leaf Table)* | Cannot exist without parent `exam_panels` |
+| **`exam_panel_committee`** | **Child Table** | Parents: `exam_panels`, `teachers` | *None (Leaf Table)* | Cannot exist without parent `exam_panels` |
 
 ---
 
 ## 1. Master Tables (Static / Pre-configured Data)
 
-### Master Table 1: `programs`
-Stores the academic programs or degree courses offered.
+### Master Table 1: `programs` [ROOT PARENT TABLE]
+Stores the academic programs or degree courses offered. Does not depend on any other table.
 
 | Column Name | Data Type | Constraints | Description / Example |
 | :--- | :--- | :--- | :--- |
@@ -18,8 +51,8 @@ Stores the academic programs or degree courses offered.
 
 ---
 
-### Master Table 2: `teachers`
-Stores faculty members who can be assigned as examiners or committee members.
+### Master Table 2: `teachers` [ROOT PARENT TABLE]
+Stores faculty members who can be assigned as examiners or committee members. Does not depend on any other table.
 
 | Column Name | Data Type | Constraints | Description / Example |
 | :--- | :--- | :--- | :--- |
@@ -30,13 +63,14 @@ Stores faculty members who can be assigned as examiners or committee members.
 
 ---
 
-### Master Table 3: `subjects`
+### Master Table 3: `subjects` [CHILD TABLE of `programs`]
 Stores the curriculum mapping each subject/paper to its respective program and semester.
+* **Parent Table**: `programs` (via `program_id`)
 
 | Column Name | Data Type | Constraints | Description / Example |
 | :--- | :--- | :--- | :--- |
 | `id` | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique identifier |
-| `program_id` | INTEGER | FOREIGN KEY -> `programs(id)` | Associated program |
+| `program_id` | INTEGER | FOREIGN KEY -> `programs(id)` | Parent program reference |
 | `semester` | INTEGER | NOT NULL | Semester number (e.g., `5`) |
 | `subject_code` | VARCHAR(50) | NOT NULL | e.g., `"DS6A-301"` |
 | `subject_name` | VARCHAR(255) | NOT NULL | e.g., `"Datamining and Data Warehousing"` |
@@ -45,8 +79,10 @@ Stores the curriculum mapping each subject/paper to its respective program and s
 
 ## 2. Transaction Tables (Exam Panel Submission Data)
 
-### Transaction Table 4: `exam_panels`
+### Transaction Table 4: `exam_panels` [TRANSACTION PARENT TABLE]
 Parent record representing one panel document instance for a given session.
+* **Parent Table**: `programs` (via `program_id`)
+* **Child Tables that depend on it**: `exam_panel_subjects`, `exam_panel_committee`
 
 | Column Name | Data Type | Constraints | Description / Example |
 | :--- | :--- | :--- | :--- |
@@ -62,8 +98,12 @@ Parent record representing one panel document instance for a given session.
 
 ---
 
-### Transaction Table 5: `exam_panel_subjects`
+### Transaction Table 5: `exam_panel_subjects` [CHILD TABLE]
 Stores each subject row in the panel table along with the chosen examiners.
+* **Parent Tables**:
+  * `exam_panels` (via `panel_id` — `ON DELETE CASCADE`)
+  * `subjects` (via `subject_id` — `ON DELETE SET NULL`)
+  * `teachers` (via `examiner_1_id` & `internal_examiner_id` — `ON DELETE SET NULL`)
 
 | Column Name | Data Type | Constraints | Description / Example |
 | :--- | :--- | :--- | :--- |
@@ -79,8 +119,11 @@ Stores each subject row in the panel table along with the chosen examiners.
 
 ---
 
-### Transaction Table 6: `exam_panel_committee`
+### Transaction Table 6: `exam_panel_committee` [CHILD TABLE]
 Stores the examination committee members and administrative signatories displayed at the bottom of the form.
+* **Parent Tables**:
+  * `exam_panels` (via `panel_id` — `ON DELETE CASCADE`)
+  * `teachers` (via `teacher_id` — `ON DELETE SET NULL`)
 
 | Column Name | Data Type | Constraints | Description / Example |
 | :--- | :--- | :--- | :--- |
