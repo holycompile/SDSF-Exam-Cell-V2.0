@@ -1,0 +1,27 @@
+{%extends 'master_frame.html'%}
+
+{%block body%}
+
+    <form action="{{url_for("admin.admin_register")}}" method="post">
+        <label for="username">Enter username:</label>
+        <input type="text" name="username" id="username">
+        <br>
+        <label for="password">Set password: </label>
+        <input type="password" name="password" id="password" maxlength="8" minlength="8">
+        <br>
+        <input type="submit" value="Register Admin">
+
+    </form>
+
+    {% if msg %}
+        {{msg}}
+
+    {%endif%}
+
+    {%if error %}
+        {{error}}
+    {%endif%}
+
+
+
+{%endblock%}

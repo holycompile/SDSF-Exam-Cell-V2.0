@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDSF Exam Cell Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+
+<header class="bg-white border-b border-slate-200 shadow-xs">
+    <!-- Clean Branding Banner -->
+    <div class="w-full px-4 sm:px-6 py-2.5">
+        <div class="flex items-center justify-between">
+            
+            <!-- Left: SDSF Department Logo + Institution Titles -->
+            <div class="flex items-center gap-4">
+                <img 
+                    src="{{ url_for('static', filename='photo/departmentlogo_transparent.png') }}" 
+                    alt="SDSF Logo" 
+                    class="h-14 sm:h-16 w-auto object-contain"
+                    onerror="this.onerror=null; this.src='/photo/departmentlogo_transparent.png';"
+                >
+                <div class="border-l border-slate-200 pl-4 hidden sm:block"></div>
+                <div>
+                    <p class="text-xs font-semibold tracking-wider text-slate-500 uppercase">
+                        Devi Ahilya Vishwavidyalaya, Indore
+                    </p>
+                    <h1 class="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">
+                        School of Data Science and Forecasting
+                    </h1>
+                </div>
+            </div>
+
+
+
+            
+
+
+
+
+
+
+
+
+            <!-- Right: Admin Login & DAVV University Logo -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                {% if 'admin_id' in session %}
+                    <a 
+                        href="{{ url_for('admin.admin_logout') }}" 
+                        class="text-xs sm:text-sm font-medium text-rose-600 hover:text-rose-700 px-3 py-1.5 rounded-md border border-rose-200 hover:bg-rose-50 transition-colors"
+                    >
+                        Admin Logout
+                    </a>
+                {% else %}
+                    <a 
+                        href="{{ url_for('admin.admin_login') }}" 
+                        class="text-xs sm:text-sm font-medium text-slate-700 hover:text-indigo-600 px-3 py-1.5 rounded-md border border-slate-300 hover:bg-slate-50 transition-colors"
+                    >
+                        Admin Login
+                    </a>
+                {% endif %}
+                <img 
+                    src="{{ url_for('static', filename='photo/davvLogo.png') }}" 
+                    alt="DAVV Logo" 
+                    class="h-14 sm:h-16 w-auto object-contain"
+                    onerror="this.onerror=null; this.src='/photo/davvLogo.png';"
+                >
+            </div>
+
+
+            
+
+
+        </div>
+    </div>
+
+    {% if 'admin_id' in session %}
+                 <nav class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center gap-3 h-12">
+                
+                <!-- Theory Panel Link -->
+                <a 
+                    href="#" 
+                    class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md text-sm font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 transition-colors"
+                >
+                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Theory Panel
+                </a>
+
+                <!-- Comprehensive Viva Link -->
+                <a 
+                    href="#" 
+                    class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                >
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    Comprehensive Viva
+                </a>
+
+            </div>
+        </div>
+                 </nav>
+                
+            {% endif %}
+
+   
+</header>
+
+<!-- Main content placeholder for child templates will come inside this automatically -->
+<main class="flex-1">
+    {% block body %}
+    {% endblock %}
+</main>
+
+{% include 'footer.html' %}
+
+</body>
+</html>
