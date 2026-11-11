@@ -2,7 +2,7 @@
 
 This repository manages the automated examination workflows for the **School of Data Science and Forecasting (SDSF)**, Devi Ahilya Vishwavidyalaya, Indore.
 
-This document details the database architecture designed for generating, storing, and printing the **Panel of Examiners (Confidential - SDSF/Exam/09)** form.
+This document details the database architecture designed for generating, storing, and printing the **Panel of Examiners** confidential form.
 
 > [!IMPORTANT]
 > **LEGAL & EDUCATIONAL USE NOTICE:**  
@@ -121,7 +121,7 @@ Maintains the syllabus mapping of subjects to their respective program and semes
 #### 4. `exam_panels`
 Parent record representing an official examination panel document for a specific semester and academic year.
 * **`id`** (`INT`, Primary Key, Auto-Increment): Primary key for the panel.
-* **`panel_code`** (`VARCHAR(50)`, Default: `'SDSF/Exam/09'`): Institutional form reference.
+* **`panel_code`** (`VARCHAR(50)`, Nullable): Institutional form reference / code.
 * **`program_id`** (`INT`, Foreign Key $\rightarrow$ `programs.id`): Course being examined.
 * **`semester`** (`INT`, Not Null): Semester number.
 * **`academic_session`** (`VARCHAR(50)`, Not Null): Academic term (e.g., `"2025-2026"` or `"DEC-2025"`).

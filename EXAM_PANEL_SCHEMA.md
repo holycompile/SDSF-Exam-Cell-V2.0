@@ -1,6 +1,6 @@
 # SDSF Exam Cell - Panel of Examiners Database Schema & Architecture
 
-This document outlines the database tables, schema design, field descriptions, parent-child relationships, and data flow required to generate and manage the **Panel of Examiners (SDSF/Exam/09)** form.
+This document outlines the database tables, schema design, field descriptions, parent-child relationships, and data flow required to generate and manage the **Panel of Examiners** form.
 
 ---
 
@@ -87,7 +87,7 @@ Parent record representing one panel document instance for a given session.
 | Column Name | Data Type | Constraints | Description / Example |
 | :--- | :--- | :--- | :--- |
 | `id` | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for the panel |
-| `panel_code` | VARCHAR(50) | DEFAULT 'SDSF/Exam/09' | Form template code |
+| `panel_code` | VARCHAR(50) | NULLABLE | Form reference / template code |
 | `program_id` | INTEGER | FOREIGN KEY -> `programs(id)` | Selected course/program |
 | `semester` | INTEGER | NOT NULL | Selected semester (e.g., `5`) |
 | `academic_session` | VARCHAR(50) | NOT NULL | e.g., `"2025-2026"` or `"DEC-2025"` |
