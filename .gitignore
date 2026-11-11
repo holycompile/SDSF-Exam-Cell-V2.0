@@ -1,5 +1,10 @@
 .env
 *.db
-__pycache__
-.sqlite3
+*.sqlite3
+__pycache__/
+*.pyc
 
+
+FLASK_BACKEND_DEVELOPER_GUIDE.pdf
+handbook.html
+PDF_MAKING_RULES.md
